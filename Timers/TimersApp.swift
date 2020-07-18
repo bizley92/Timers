@@ -11,7 +11,7 @@ import SwiftUI
 struct TimersApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TimersList().environmentObject(Data())
         }
     }
 }
