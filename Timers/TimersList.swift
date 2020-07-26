@@ -18,9 +18,7 @@ struct TimersList: View {
             NavigationView {
                 List {
                     ForEach(data.timers) { timer in
-                        NavigationLink(destination: TimerDetail(timer: timer)) {
-                            TimerRow(timer: timer)
-                        }
+                        TimerRow(timer: timer)
                         .environmentObject(self.data)
                     }
                     .onDelete(perform: onDelete)
@@ -32,21 +30,24 @@ struct TimersList: View {
             }
         }
         .onAppear(perform: {
-            UNUserNotificationCenter.current().requestAuthorization(options: [.badge,.sound,.alert]) { (_, _) in
+            UNUserNotificationCenter.current().requestAuthorization(options: [.badge,.sound,.alert]) { granted, error in
+                if let error = error {
+                    // log issue
+                }
             }
         })
         .onReceive(self.secondsTimer) { (_) in
             for var timer in self.data.timers {
                 if timer.isActive {
-                    if timer.remaining > 0 {
-                        timer.remaining -= 1
+                    if !timer.interval.isZero {
+                        timer.interval -= 1
                         self.data.timers[self.data.timers.firstIndex(where: {$0.id == timer.id})!] = timer
                     }
                     else
                     {
                         timer.isActive.toggle()
                         self.data.timers[self.data.timers.firstIndex(where: {$0.id == timer.id})!] = timer
-                        self.notify()
+                        self.notify(timer: timer)
                     }
                 }
             }
@@ -56,7 +57,13 @@ struct TimersList: View {
     private var addButton: some View {
         switch editMode {
         case .inactive:
-            return AnyView(Button(action: onAdd) { Image(systemName: "plus")})
+            return AnyView(
+                NavigationLink(
+                    destination: AddTimer()
+                        .environmentObject(data),
+                    label: {
+                        Text("Add")
+                    }))
         default:
             return AnyView(EmptyView())
         }
@@ -70,21 +77,15 @@ struct TimersList: View {
         data.timers.move(fromOffsets: source, toOffset: destination)
     }
     
-    func onAdd() {
-        let timerDetail = TimerDetail(timer: NamedTimer(name: ""))
-//        if (timerDetail.timer) {
-        data.timers.append(timerDetail.timer)
-//        }
-    }
-    
-    func notify() {
+    func notify(timer: NamedTimer) {
         let content = UNMutableNotificationContent()
-        content.title = "Timers"
-        content.body = "Timer complete"
+        content.title = "Timer complete"
+        content.body = "Name: $\(timer.name)"
+        content.sound = UNNotificationSound.default
 
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-        let req = UNNotificationRequest(identifier: "MSG", content: content, trigger: trigger)
-        UNUserNotificationCenter.current().add(req, withCompletionHandler: nil)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request)
     }
 }
 
