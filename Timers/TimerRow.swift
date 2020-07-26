@@ -16,26 +16,47 @@ struct TimerRow: View {
     }
     
     var body: some View {
-        HStack {
-            Text(timer.name)
-            Spacer()
-            Button(action: {self.data.timers[self.timerIndex].isActive.toggle()}, label: {
-                Image(systemName: self.data.timers[self.timerIndex].isActive ? "pause.circle" : "play.circle")
-            })
-            Button(action: {self.data.timers[self.timerIndex].interval = self.data.timers[self.timerIndex].initialInterval}, label: {
-                Image(systemName: "arrow.clockwise.circle")
-            })
-            Text(String(self.data.timers[self.timerIndex].interval))
-                .multilineTextAlignment(.trailing)
-            Spacer()
-            NavigationLink(
-                destination: TimerDetail(timer: timer)
-                    .environmentObject(data),
-                label: {
-                    Text("View")
-            })
+        VStack {
+            HStack {
+                NavigationLink(
+                    destination: TimerDetail(timer: timer)
+                        .environmentObject(data)
+                ) {
+                    Text(timer.name)
+                    Spacer()
+                    Text(self.data.timers[self.timerIndex].intervalToString())
+                        .padding(.trailing, 10.0)
+                        .frame(minWidth: 90, alignment: .trailing)
+                }
+            }
+            .padding(.bottom, 5)
+            HStack {
+                //            VStack {
+                //                if self.data.timers[self.timerIndex].isActive || self.data.timers[self.timerIndex].interval != 0 {
+                Button(action: {self.data.timers[self.timerIndex].isActive.toggle()}) {
+                    Text(self.data.timers[self.timerIndex].isActive ? "Pause" : "Continue").foregroundColor(.white)
+                }
+                .frame(minWidth: 100, idealWidth: 100, maxWidth: .infinity, minHeight: 35, alignment: .center)
+                .background(Color.blue)
+                .cornerRadius(22)
+                .padding(.trailing, 5)
+                //                }
+                Spacer()
+                Button(action: {
+                    self.data.timers[self.timerIndex].interval = self.data.timers[self.timerIndex].initialInterval
+                    self.data.timers[self.timerIndex].isActive = true
+                }, label: {
+                    Text("Restart").foregroundColor(.white)
+                })
+                .frame(minWidth: 100, idealWidth: 100, maxWidth: .infinity, minHeight: 35, alignment: .center)
+                .background(Color.blue)
+                .cornerRadius(22)
+                .padding(.leading, 5)
+                //            }
+            }
+            .buttonStyle(BorderlessButtonStyle())
         }
-        .buttonStyle(BorderlessButtonStyle())
+        .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/, 10)
     }
 }
 

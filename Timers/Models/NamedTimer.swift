@@ -13,6 +13,21 @@ struct NamedTimer: Identifiable {
     var interval: TimeInterval = TimeInterval(60)
     var isActive = true
     var initialInterval: TimeInterval
+    
+    func intervalToString() -> String {
+//        let ms = Int(interval.truncatingRemainder(dividingBy: 1) * 1000)
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute, .second]
+        return formatter.string(from: self.interval)!// + ".\(ms)"
+    }
+    
+    func spellOutInterval() -> String {
+//        let ms = Int(interval.truncatingRemainder(dividingBy: 1) * 1000)
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.unitsStyle = .spellOut
+        return formatter.string(from: self.interval)!.capitalized// + ".\(ms)"
+    }
 }
 
 extension NamedTimer {
@@ -20,5 +35,8 @@ extension NamedTimer {
         self.name = name
         self.initialInterval = duration
         self.interval = duration
+        if (self.name.isEmpty) {
+            self.name = intervalToString()
+        }
     }
 }

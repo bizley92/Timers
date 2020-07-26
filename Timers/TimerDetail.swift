@@ -20,7 +20,7 @@ struct TimerDetail: View {
         NavigationView {
             Form {
                 TextField("Name", text: Binding(get: {self.data.timers[self.timerIndex].name}, set: {self.data.timers[self.timerIndex].name = $0}))
-                Text(String(self.data.timers[self.timerIndex].interval))
+                Text(self.data.timers[self.timerIndex].intervalToString())
                 Text(self.data.timers[self.timerIndex].isActive ? "Running" : "Stopped")
             }
             .toolbar {

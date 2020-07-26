@@ -19,7 +19,7 @@ struct TimersList: View {
                 List {
                     ForEach(data.timers) { timer in
                         TimerRow(timer: timer)
-                        .environmentObject(self.data)
+                            .environmentObject(self.data)
                     }
                     .onDelete(perform: onDelete)
                     .onMove(perform: onMove)
@@ -31,9 +31,6 @@ struct TimersList: View {
         }
         .onAppear(perform: {
             UNUserNotificationCenter.current().requestAuthorization(options: [.badge,.sound,.alert]) { granted, error in
-                if let error = error {
-                    // log issue
-                }
             }
         })
         .onReceive(self.secondsTimer) { (_) in
@@ -80,11 +77,11 @@ struct TimersList: View {
     func notify(timer: NamedTimer) {
         let content = UNMutableNotificationContent()
         content.title = "Timer complete"
-        content.body = "Name: $\(timer.name)"
+        content.body = "Name: \(timer.name)"
         content.sound = UNNotificationSound.default
-
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        
+//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0, repeats: false)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
         UNUserNotificationCenter.current().add(request)
     }
 }
