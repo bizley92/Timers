@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct NamedTimer: Identifiable {
+class NamedTimer: Identifiable {
     var id = UUID()
-    var name: String
-    var interval: TimeInterval = TimeInterval(60)
+    var name: String = ""
+    var interval: TimeInterval = 60
     var isActive = true
-    var initialInterval: TimeInterval
+    var initialInterval: TimeInterval = 0
     
     func intervalToString() -> String {
 //        let ms = Int(interval.truncatingRemainder(dividingBy: 1) * 1000)
@@ -31,7 +31,8 @@ struct NamedTimer: Identifiable {
 }
 
 extension NamedTimer {
-    init(name: String, duration: TimeInterval) {
+    convenience init(name: String, duration: TimeInterval) {
+        self.init()
         self.name = name
         self.initialInterval = duration
         self.interval = duration

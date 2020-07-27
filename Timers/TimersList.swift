@@ -49,6 +49,12 @@ struct TimersList: View {
                 }
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
+            self.data.timers.map { $0.isActive = false }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+            self.data.timers.map { $0.isActive = true }
+        }
     }
     
     private var addButton: some View {
@@ -80,7 +86,7 @@ struct TimersList: View {
         content.body = "Name: \(timer.name)"
         content.sound = UNNotificationSound.default
         
-//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0, repeats: false)
+        //        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
         UNUserNotificationCenter.current().add(request)
     }
