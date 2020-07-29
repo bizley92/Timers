@@ -34,9 +34,9 @@ struct TimersList: View {
             }
         })
         .onReceive(self.secondsTimer) { (_) in
-            for var timer in self.data.timers {
+            for timer in self.data.timers {
                 if timer.isActive {
-                    if !timer.interval.isZero {
+                    if timer.interval > 0 {
                         timer.interval -= 1
                         self.data.timers[self.data.timers.firstIndex(where: {$0.id == timer.id})!] = timer
                     }
@@ -44,16 +44,28 @@ struct TimersList: View {
                     {
                         timer.isActive.toggle()
                         self.data.timers[self.data.timers.firstIndex(where: {$0.id == timer.id})!] = timer
-                        self.notify(timer: timer)
+//                        self.notify(timer: timer)
                     }
                 }
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
-            self.data.timers.map { $0.isActive = false }
+            self.data.timers.map {
+                if $0.isActive {
+                    $0.isActive = false
+                    $0.stoppedTime = Date()
+                }
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-            self.data.timers.map { $0.isActive = true }
+            let timeInterval = Date()
+            self.data.timers.map {
+                if $0.stoppedTime != nil {
+                    $0.isActive = true
+                    $0.interval = $0.interval - Date().timeIntervalSince(timeInterval)
+                    $0.stoppedTime = nil
+                }
+            }
         }
     }
     
@@ -80,16 +92,19 @@ struct TimersList: View {
         data.timers.move(fromOffsets: source, toOffset: destination)
     }
     
-    func notify(timer: NamedTimer) {
-        let content = UNMutableNotificationContent()
-        content.title = "Timer complete"
-        content.body = "Name: \(timer.name)"
-        content.sound = UNNotificationSound.default
-        
-        //        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0, repeats: false)
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
-        UNUserNotificationCenter.current().add(request)
-    }
+//    func notify(timer: NamedTimer, notificationInterval: TimeInterval = 0) {
+//        let content = UNMutableNotificationContent()
+//        content.title = "Timer complete"
+//        content.body = "Name: \(timer.name)"
+//        content.sound = UNNotificationSound.default
+//
+//        var trigger: UNTimeIntervalNotificationTrigger? = nil
+//        if notificationInterval > 0 {
+//            trigger = UNTimeIntervalNotificationTrigger(timeInterval: notificationInterval, repeats: false)
+//        }
+//        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+//        UNUserNotificationCenter.current().add(request)
+//    }
 }
 
 
