@@ -8,5 +8,5 @@
 import SwiftUI
 
 final class Data: ObservableObject {
-    @Published var timers: [NamedTimer] = [NamedTimer(name: "Example", duration: 60)]
+    @Published var timers: [NamedTimer] = []
 }

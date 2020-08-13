@@ -18,7 +18,13 @@ class NamedTimer: Identifiable {
     func intervalToString() -> String {
 //        let ms = Int(interval.truncatingRemainder(dividingBy: 1) * 1000)
         let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.hour, .minute, .second]
+//        if self.interval > 3599 {
+//            formatter.allowedUnits = [.hour, .minute]
+//        }
+//        else {
+            formatter.allowedUnits = [.hour, .minute, .second]
+//        }
+        
         return formatter.string(from: self.interval)!// + ".\(ms)"
     }
     

@@ -23,10 +23,14 @@ struct TimerRow: View {
                         .environmentObject(data)
                 ) {
                     Text(timer.name)
+                        .font(.system(size: 22))
                     Spacer()
                     Text(self.data.timers[self.timerIndex].intervalToString())
                         .padding(.trailing, 10.0)
                         .frame(minWidth: 90, alignment: .trailing)
+                        .font(.system(size: 30))
+                        .minimumScaleFactor(0.01)
+                        .lineLimit(1)
                 }
             }
             .padding(.bottom, 5)
