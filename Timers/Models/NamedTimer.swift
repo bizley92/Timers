@@ -15,6 +15,7 @@ class NamedTimer: Identifiable {
     var initialInterval: TimeInterval = 0
     var stoppedTime : Date?
     var notificationRequest: UNNotificationRequest? = nil
+    
     func intervalToString() -> String {
 //        let ms = Int(interval.truncatingRemainder(dividingBy: 1) * 1000)
         let formatter = DateComponentsFormatter()
@@ -41,8 +42,24 @@ class NamedTimer: Identifiable {
         content.title = "Timer complete: \(self.name)"
         content.sound = UNNotificationSound.default
         
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: self.initialInterval, repeats: false)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: self.interval, repeats: false)
         return UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+    }
+    
+    func addNotification() -> Void {
+        self.notificationRequest = createNotification()
+        UNUserNotificationCenter.current().add(self.notificationRequest!)
+    }
+    
+    func cancelNotification() -> Void {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [self.notificationRequest!.identifier])
+    }
+    
+    func reset() -> Void {
+        interval = initialInterval
+        isActive = true
+        cancelNotification()
+        addNotification()
     }
 }
 

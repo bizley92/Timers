@@ -11,10 +11,6 @@ struct TimerRow: View {
     @EnvironmentObject var data: Data
     @State var timer: NamedTimer
     
-    var timerIndex: Int {
-        data.timers.firstIndex(where: {$0.id == timer.id})!
-    }
-    
     var body: some View {
         VStack {
             HStack {
@@ -25,7 +21,7 @@ struct TimerRow: View {
                     Text(timer.name)
                         .font(.system(size: 22))
                     Spacer()
-                    Text(self.data.timers[self.timerIndex].intervalToString())
+                    Text(timer.intervalToString())
                         .padding(.trailing, 10.0)
                         .frame(minWidth: 90, alignment: .trailing)
                         .font(.system(size: 30))
@@ -36,20 +32,24 @@ struct TimerRow: View {
             .padding(.bottom, 5)
             HStack {
                 //            VStack {
-                //                if self.data.timers[self.timerIndex].isActive || self.data.timers[self.timerIndex].interval != 0 {
-                Button(action: {self.data.timers[self.timerIndex].isActive.toggle()}) {
-                    Text(self.data.timers[self.timerIndex].isActive ? "Pause" : "Continue").foregroundColor(.white)
+                if timer.interval > 0 {
+                Button(action: {
+                    timer.isActive.toggle()
+                    if timer.isActive {
+                        timer.addNotification()
+                    } else {
+                        timer.cancelNotification()
+                    }
+                }) {
+                    Text(timer.isActive ? "Pause" : "Continue").foregroundColor(.white)
                 }
                 .frame(minWidth: 100, idealWidth: 100, maxWidth: .infinity, minHeight: 35, alignment: .center)
                 .background(Color.blue)
                 .cornerRadius(22)
                 .padding(.trailing, 5)
-                //                }
                 Spacer()
-                Button(action: {
-                    self.data.timers[self.timerIndex].interval = self.data.timers[self.timerIndex].initialInterval
-                    self.data.timers[self.timerIndex].isActive = true
-                }, label: {
+                }
+                Button(action: {timer.reset()}, label: {
                     Text("Restart").foregroundColor(.white)
                 })
                 .frame(minWidth: 100, idealWidth: 100, maxWidth: .infinity, minHeight: 35, alignment: .center)

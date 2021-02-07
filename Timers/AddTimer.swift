@@ -14,9 +14,6 @@ struct AddTimer: View {
     @State var duration = TimeInterval(60)
     @State var name = ""
     @State var time = 0
-//    var timerIndex: Int {
-//        data.timers.firstIndex(where: {$0.id == timer.id})!
-//    }
     
     var body: some View {
 //        let formattedNumber = Binding<String>(
@@ -55,7 +52,8 @@ struct AddTimer: View {
 //                            print("Cancelled")
 //                        }
                         Button("Start") {
-                            self.data.timers.append(NamedTimer(name: self.name, duration: self.duration))
+//                            self.data.timers.append(NamedTimer(name: self.name, duration: self.duration))
+                            self.data.timers.append(NamedTimer(name: self.name, duration: TimeInterval(self.duration)))
                             self.mode.wrappedValue.dismiss()
                         }
                     }

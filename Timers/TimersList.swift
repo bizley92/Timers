@@ -21,8 +21,8 @@ struct TimersList: View {
                         TimerRow(timer: timer)
                             .environmentObject(self.data)
                     }
-                    .onDelete(perform: onDelete)
-                    .onMove(perform: onMove)
+                    .onDelete(perform: self.onDelete)
+                    .onMove(perform: self.onMove)
                 }
                 .navigationBarTitle(Text("Timers"))
                 .navigationBarItems(leading: EditButton(), trailing: addButton)
@@ -58,11 +58,11 @@ struct TimersList: View {
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-            let timeInterval = Date()
             self.data.timers.map {
                 if $0.stoppedTime != nil {
                     $0.isActive = true
-                    $0.interval = $0.interval - Date().timeIntervalSince(timeInterval)
+                    let timeSinceInterval = Date().timeIntervalSince($0.stoppedTime!)
+                    $0.interval = timeSinceInterval > $0.interval ? 0 : $0.interval - timeSinceInterval
                     $0.stoppedTime = nil
                 }
             }
@@ -85,26 +85,16 @@ struct TimersList: View {
     }
     
     func onDelete(at offsets: IndexSet) {
-        data.timers.remove(atOffsets: offsets)
+        for offset in offsets {
+            let timer = self.data.timers[offset]
+            timer.cancelNotification()
+        }
+        self.data.timers.remove(atOffsets: offsets)
     }
     
     func onMove(source: IndexSet, destination: Int) {
-        data.timers.move(fromOffsets: source, toOffset: destination)
+        self.data.timers.move(fromOffsets: source, toOffset: destination)
     }
-    
-//    func notify(timer: NamedTimer, notificationInterval: TimeInterval = 0) {
-//        let content = UNMutableNotificationContent()
-//        content.title = "Timer complete"
-//        content.body = "Name: \(timer.name)"
-//        content.sound = UNNotificationSound.default
-//
-//        var trigger: UNTimeIntervalNotificationTrigger? = nil
-//        if notificationInterval > 0 {
-//            trigger = UNTimeIntervalNotificationTrigger(timeInterval: notificationInterval, repeats: false)
-//        }
-//        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-//        UNUserNotificationCenter.current().add(request)
-//    }
 }
 
 

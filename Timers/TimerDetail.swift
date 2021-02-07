@@ -12,16 +12,12 @@ struct TimerDetail: View {
     @EnvironmentObject var data: Data
     @State var timer: NamedTimer
     
-    var timerIndex: Int {
-        data.timers.firstIndex(where: {$0.id == timer.id})!
-    }
-    
     var body: some View {
         NavigationView {
             Form {
-                TextField("Name", text: Binding(get: {self.data.timers[self.timerIndex].name}, set: {self.data.timers[self.timerIndex].name = $0}))
-                Text(self.data.timers[self.timerIndex].intervalToString())
-                Text(self.data.timers[self.timerIndex].isActive ? "Running" : "Stopped")
+                TextField("Name", text: Binding(get: {timer.name}, set: {timer.name = $0}))
+                Text(timer.intervalToString())
+                Text(timer.isActive ? "Running" : "Stopped")
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
@@ -30,8 +26,8 @@ struct TimerDetail: View {
                             self.mode.wrappedValue.dismiss()
 //                            self.data.timers.remove(at: self.timerIndex)
                         }
-                        Button(self.data.timers[self.timerIndex].isActive ? "Pause" : "Continue") {
-                            self.data.timers[self.timerIndex].isActive.toggle()
+                        Button(timer.isActive ? "Pause" : "Continue") {
+                            timer.isActive.toggle()
                         }
                     }
                 }
