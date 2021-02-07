@@ -10,6 +10,11 @@ import SwiftUI
 struct TimerRow: View {
     @EnvironmentObject var data: Data
     @State var timer: NamedTimer
+    @State var timerActionString = "Pause"
+    
+    func setTimerActionString() -> Void {
+        timerActionString = timer.isActive ? "Pause" : "Continue"
+    }
     
     var body: some View {
         VStack {
@@ -35,13 +40,14 @@ struct TimerRow: View {
                 if timer.interval > 0 {
                 Button(action: {
                     timer.isActive.toggle()
+                    setTimerActionString()
                     if timer.isActive {
                         timer.addNotification()
                     } else {
                         timer.cancelNotification()
                     }
                 }) {
-                    Text(timer.isActive ? "Pause" : "Continue").foregroundColor(.white)
+                    Text(timerActionString).foregroundColor(.white)
                 }
                 .frame(minWidth: 100, idealWidth: 100, maxWidth: .infinity, minHeight: 35, alignment: .center)
                 .background(Color.blue)
