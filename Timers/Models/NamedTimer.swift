@@ -33,14 +33,16 @@ class NamedTimer: Identifiable {
 //        let ms = Int(interval.truncatingRemainder(dividingBy: 1) * 1000)
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.hour, .minute, .second]
-        formatter.unitsStyle = .spellOut
-        return formatter.string(from: self.initialInterval)!.capitalized// + ".\(ms)"
+        formatter.unitsStyle = .abbreviated
+        return formatter.string(from: self.initialInterval)!// + ".\(ms)"
     }
     
     func createNotification() -> UNNotificationRequest {
         let content = UNMutableNotificationContent()
         content.title = "Timer complete: \(self.name)"
-        content.sound = UNNotificationSound.default
+//        content.sound = UNNotificationSound.default
+        let alarm = UNNotificationSoundName("digital-alarm.mp3")
+        content.sound = UNNotificationSound(named: alarm)
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: self.interval, repeats: false)
         return UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
@@ -70,7 +72,7 @@ extension NamedTimer {
         self.initialInterval = duration
         self.interval = duration
         if (self.name.isEmpty) {
-            self.name = intervalToString()
+            self.name = spellOutInterval()
         }
         self.notificationRequest = createNotification()
         UNUserNotificationCenter.current().add(self.notificationRequest!)

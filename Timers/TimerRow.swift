@@ -25,13 +25,15 @@ struct TimerRow: View {
                 ) {
                     Text(timer.name)
                         .font(.system(size: 22))
-                    Spacer()
+                        .lineLimit(2)
+                        .frame(minWidth: 110, idealWidth: 170, maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, minHeight: 35, maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .leading)
+//                    Spacer()
                     Text(timer.intervalToString())
-                        .padding(.trailing, 10.0)
-                        .frame(minWidth: 90, alignment: .trailing)
-                        .font(.system(size: 30))
-                        .minimumScaleFactor(0.01)
+                        .frame(minWidth: 30, idealWidth: 130, maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, minHeight: 35, maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .trailing)
+                        .font(Font.title.monospacedDigit())
+//                        .minimumScaleFactor(0.01)
                         .lineLimit(1)
+                        .padding(.trailing, 2)
                 }
             }
             .padding(.bottom, 5)

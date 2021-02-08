@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C91C5C2224CCAC92005ACED1 /* DurationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91C5C2124CCAC92005ACED1 /* DurationPicker.swift */; };
 		C91C5C2424CCCBAA005ACED1 /* AddTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91C5C2324CCCBAA005ACED1 /* AddTimer.swift */; };
+		C938648825D1AEB0008E7EC4 /* digital-alarm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C938648725D1AEB0008E7EC4 /* digital-alarm.mp3 */; };
 		C98D85F524C343E800CEC1F0 /* TimerDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98D85F424C343E800CEC1F0 /* TimerDetail.swift */; };
 		C98D85F724C3455000CEC1F0 /* TimerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98D85F624C3455000CEC1F0 /* TimerRow.swift */; };
 		C98D85FA24C3469300CEC1F0 /* NamedTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98D85F924C3469300CEC1F0 /* NamedTimer.swift */; };
@@ -42,6 +43,7 @@
 /* Begin PBXFileReference section */
 		C91C5C2124CCAC92005ACED1 /* DurationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationPicker.swift; sourceTree = "<group>"; };
 		C91C5C2324CCCBAA005ACED1 /* AddTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTimer.swift; sourceTree = "<group>"; };
+		C938648725D1AEB0008E7EC4 /* digital-alarm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "digital-alarm.mp3"; path = "../../../../Downloads/digital-alarm.mp3"; sourceTree = "<group>"; };
 		C98D85F424C343E800CEC1F0 /* TimerDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDetail.swift; sourceTree = "<group>"; };
 		C98D85F624C3455000CEC1F0 /* TimerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerRow.swift; sourceTree = "<group>"; };
 		C98D85F924C3469300CEC1F0 /* NamedTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamedTimer.swift; sourceTree = "<group>"; };
@@ -86,6 +88,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C938648625D1AE72008E7EC4 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				C938648725D1AEB0008E7EC4 /* digital-alarm.mp3 */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
 		C98D85F824C3467B00CEC1F0 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -118,6 +128,7 @@
 		C9B209D324C0FAE400B3DD91 /* Timers */ = {
 			isa = PBXGroup;
 			children = (
+				C938648625D1AE72008E7EC4 /* Assets */,
 				C98D85F824C3467B00CEC1F0 /* Models */,
 				C9B209D424C0FAE400B3DD91 /* TimersApp.swift */,
 				C9B209D624C0FAE400B3DD91 /* TimersList.swift */,
@@ -263,6 +274,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9B209DC24C0FAE600B3DD91 /* Preview Assets.xcassets in Resources */,
+				C938648825D1AEB0008E7EC4 /* digital-alarm.mp3 in Resources */,
 				C9B209D924C0FAE600B3DD91 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
